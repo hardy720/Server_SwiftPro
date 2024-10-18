@@ -1,0 +1,23 @@
+
+# 1. 服务器配置
+server:
+  port: 8282
+  servlet:
+    context-path: /api
+
+# 2. 数据库配置
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/shopManagerPro?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: aA123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+      # 4. 时间格式配置
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+# 5.上传图片路径
+upload:
+  # 上传的图片保存路径（可自定义）
+  path: /Users/fangjinliang/Java/Upload/MyManagerPro/uploadImg/
