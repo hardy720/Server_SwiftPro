@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Server_SwiftPro.iml" filepath="$PROJECT_DIR$/Server_SwiftPro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/swiftServerPro.iml" filepath="$PROJECT_DIR$/swiftServerPro.iml" />
     </modules>
   </component>
 </project>

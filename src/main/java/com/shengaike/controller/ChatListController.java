@@ -23,28 +23,15 @@ import java.util.Map;
  * </p>
  *
  * @author Hardy
- * @since 2024-10-18
+ * @since 2024-10-21
  */
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/chatList")
+public class ChatListController {
     @Autowired
     UserService userService;
-    @GetMapping("/login")
-    public Result login(@Valid LoginForm loginForm){
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name", loginForm.getUserName());
-        User user = this.userService.getOne(queryWrapper);
-        if(user == null){
-            return Result.error("用户名错误");
-        }
-        // 判断密码是否正确
-        if (!user.getPassWord().equals(loginForm.getPassWord())){
-            return Result.error("密码错误");
-        }
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("userInfo",user);
-        return Result.ok().put("status","success").put("data", map);
+    @GetMapping("/insertChart")
+    public Result insertChart(@Valid LoginForm loginForm){
+        return Result.ok().put("status","success").put("data", "");
     }
 }
