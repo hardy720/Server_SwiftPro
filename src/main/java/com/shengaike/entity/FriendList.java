@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,7 +37,7 @@ import lombok.EqualsAndHashCode;
     private String friendAvatar;
 
       @TableField(fill = FieldFill.INSERT)
-      private LocalDateTime friendAddtime;
+      private Date friendAddtime;
 
 
 }

@@ -15,9 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-/**
- * Rev 0006. 接收上传图片并保存到本地.
- */
 
 @RestController
 @RequestMapping("/upload")
@@ -26,7 +23,7 @@ public class UploadImgController {
     @Autowired(required = false)
     private ResourceLoader resourceLoader;
 
-    @Value(value = "/Users/hardy/IdeaProjects/uploadImg")
+    @Value(value = "/Users/fangjinliang/Java/Upload/Server_SwiftPro")
     private String uploadPath;
 
 
@@ -66,7 +63,7 @@ public class UploadImgController {
             File saveFile = new File(savePath);
             // 将上传的文件复制到指定目录
             FileCopyUtils.copy(multipartFile.getBytes(), saveFile);            // 返回给前端的图片保存路径；前台可以根据返回的路径拼接完整地址，即可在浏览器上预览该图片
-            String path = "uploadImg" + File.separator + fileName;
+            String path = "upload" + File.separator + fileName;
             if (path.contains("\\")) {
                 path = path.replace("\\", "/");
             }
