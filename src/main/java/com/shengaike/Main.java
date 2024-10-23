@@ -44,10 +44,10 @@ public class Main {
         strategyConfig.setEntityLombokModel(true);
         strategyConfig.setNaming(NamingStrategy.underline_to_camel);
         strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategyConfig.setInclude("chat_list");
-        TableFill tableFill1 = new TableFill("last_chattime", FieldFill.INSERT);
-        TableFill tableFill2 = new TableFill("last_chattime", FieldFill.INSERT);
-        List<TableFill> list = Arrays.asList(tableFill1,tableFill2);
+        strategyConfig.setInclude("friend_list");
+        TableFill tableFill1 = new TableFill("friend_addtime", FieldFill.INSERT);
+//        TableFill tableFill2 = new TableFill("friend_addtime", FieldFill.INSERT);
+        List<TableFill> list = Arrays.asList(tableFill1);
         strategyConfig.setTableFillList(list);
         autoGenerator.setStrategy(strategyConfig);
 

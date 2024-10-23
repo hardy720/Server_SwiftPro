@@ -1,7 +1,7 @@
 
 # 1. 服务器配置
 server:
-  port: 8181
+  port: 8282
   servlet:
     context-path: /api
 
