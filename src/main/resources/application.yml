@@ -20,7 +20,6 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
-
 # 5.上传图片路径
 upload:
   # 上传的图片保存路径（可自定义）

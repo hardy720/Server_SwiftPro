@@ -1,11 +1,18 @@
 package com.shengaike.websocket;
 
+import cn.hutool.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.Base64;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -16,12 +23,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Component
 @Slf4j
-@ServerEndpoint("/websocket/{applicationName}")
+@ServerEndpoint("/websocket/{id}")
 public class WebSocketServer {
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
-    // 应用名称
-    private String applicationName;
+    //
+    private String userSessionID;
 
     //虽然@Component默认是单例模式的，但springboot还是会为每个websocket连接初始化一个bean，所以可以用一个静态set保存起来。
     private static final CopyOnWriteArraySet<WebSocketServer> webSockets = new CopyOnWriteArraySet<>();
@@ -33,15 +40,16 @@ public class WebSocketServer {
      * start connecting
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam(value = "applicationName") String applicationName) {
+    public void onOpen(Session session, @PathParam(value = "id") String id) {
         try {
             this.session = session;
-            this.applicationName = applicationName;
+            this.userSessionID = id;
             webSockets.add(this);
-            sessionPool.put(applicationName, session);
+            sessionPool.put(userSessionID, session);
             log.info("[websocket message] There are new connections, the total number is." + webSockets.size());
             log.info("[Current Client List]:"+ sessionPool.keySet());
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -55,7 +63,7 @@ public class WebSocketServer {
     public void onClose() {
         try {
             webSockets.remove(this);
-            sessionPool.remove(this.applicationName);
+            sessionPool.remove(this.userSessionID);
             log.info("[websocket message] Connection disconnected, total number of:" + webSockets.size());
             log.info("[Current Client List]："+ sessionPool.keySet());
         } catch (Exception e) {
@@ -70,10 +78,14 @@ public class WebSocketServer {
      * return      : void
      */
     @OnMessage
-    public void onMessage(String message) {
-        String[] strings = message.split("_!_");
-        log.info("[websocket message] Receiving client message:" + message);
-        this.sendApplicationMessage(strings[1],strings[0]);
+    public void onMessage(String message) throws Exception {
+        // 收到消息后先解密.
+        String decryptedText = AESUtil.decrypt(message);
+        // 解析为map.
+        MessageParser messageParser = new MessageParser();
+        String outputJson = messageParser.parseAndReassemble(decryptedText);
+        Map<String, Object> messageMap = messageParser.SToJson(decryptedText);
+        this.sendApplicationMessage((String) messageMap.get("msg_To"),outputJson);
     }
 
     /**
@@ -119,9 +131,8 @@ public class WebSocketServer {
         Session session = sessionPool.get(applicationName);
         if (session != null && session.isOpen()) {
             try {
-                log.info("Sending socket messages:" + message);
-                String ss = "This is the server, I got your message:" + message;
-                session.getAsyncRemote().sendText(ss);
+                String decryptedText = AESUtil.encrypt(message);
+                session.getAsyncRemote().sendText(decryptedText);
             } catch (Exception e) {
                 e.printStackTrace();
             }
