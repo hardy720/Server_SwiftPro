@@ -21,7 +21,7 @@ public class MessageParser {
         // 解析JSON字符串为Map
         Map<String, Object> messageMap = objectMapper.readValue(jsonString, Map.class);
         // 从Map中提取数据
-        Integer msgType = (Integer) messageMap.get("msg_Type");
+        Integer msgType = (Integer) messageMap.get("chart_Type");
         switch (msgType){
             case 0://心跳
                 messageMap.put("data","pong");

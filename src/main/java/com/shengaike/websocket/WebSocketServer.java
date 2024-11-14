@@ -1,17 +1,13 @@
 package com.shengaike.websocket;
 
-import cn.hutool.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.util.Base64;
+import java.io.IOException;
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -34,7 +30,6 @@ public class WebSocketServer {
     private static final CopyOnWriteArraySet<WebSocketServer> webSockets = new CopyOnWriteArraySet<>();
     // 用来存在线连接用户信息
     private static final ConcurrentHashMap<String, Session> sessionPool = new ConcurrentHashMap<>();
-
 
     /**
      * start connecting
@@ -136,6 +131,8 @@ public class WebSocketServer {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else{
+            // 用户没有连接socket，保存数据。
         }
     }
 
