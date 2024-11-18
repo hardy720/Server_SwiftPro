@@ -23,7 +23,7 @@ public class UploadImgController {
     @Autowired(required = false)
     private ResourceLoader resourceLoader;
 
-    @Value(value = "/Users/fangjinliang/Java/Upload/Server_SwiftPro")
+    @Value(value = "/Users/hardy/java/Upload/Server_SwiftPro")
     private String uploadPath;
 
 
